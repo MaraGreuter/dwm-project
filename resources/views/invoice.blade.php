@@ -43,6 +43,9 @@
             <form action="/factuur/download" method="POST">
                 @csrf
                 <input type="text" name="name" placeholder="Naam">
+                <input type="text" name="address" placeholder="address">
+                <input type="text" name="city" placeholder="plaats">
+
                 <button class="text-yellow-500 rounded-3xl p-4 bg-yellow-200" type="submit">verstuur Factuur</button>
 
             </form>
