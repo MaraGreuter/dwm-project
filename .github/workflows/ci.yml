@@ -5,22 +5,39 @@ on: push
 jobs:
   build:
     runs-on: ubuntu-latest
-
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: ci_db
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=3
+      
     steps:
       - uses: actions/checkout@v3
 
       - uses: shivammathur/setup-php@v2
         with:
           php-version: 8.2
+          extensions: mbstring, bcmath, pdo_mysql
 
       - run: composer install
       - name: Run Pint (linter)
-      run: vendor/bin/pint --test
+        run: vendor/bin/pint --test
 
       - name: Run PHPStan
-  run: vendor/bin/phpstan analyse
+        run: vendor/bin/phpstan analyse
 
 
-      - run: cp .env.example .env
+      - run: cp .env.ci .env
       - run: php artisan key:generate
       - run: php artisan test
+
+  
+
