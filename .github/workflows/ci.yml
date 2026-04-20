@@ -31,7 +31,7 @@ jobs:
 
       - run: composer install --no-interaction
       
-      - run: cp .env.ci .env
+      - run: cp .env.example .env
       - run: php artisan key:generate
       - run: php artisan migrate --force
       
