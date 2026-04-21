@@ -49,7 +49,7 @@ jobs:
          sudo apt-get install -y mysql-client
          export MYSQL_PWD=root
          until mysqladmin ping -hmysql -uroot -proot --silent; do
-          sleep 2
+          sleep 15
          done
         
       - run: php artisan migrate --force
