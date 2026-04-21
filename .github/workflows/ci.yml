@@ -29,29 +29,29 @@ jobs:
           php-version: 8.2
           extensions: mbstring, bcmath, pdo_mysql
 
-      - run: composer install --no-interaction
+      - run: composer install --no-interaction --prefer-dist --no-progress
       
       - run: cp .env.example .env
       - name: Setup DB
         run: |
           echo "DB_CONNECTION=mysql" >> .env
-          echo "DB_HOST=127.0.0.1" >> .env
+          echo "DB_HOST=mysql" >> .env
           echo "DB_PORT=3306" >> .env
           echo "DB_DATABASE=ci_db" >> .env
           echo "DB_USERNAME=root" >> .env
           echo "DB_PASSWORD=root" >> .env
           
       - run: php artisan key:generate
+      - run: php artisan config:clear
 
       - name: Wait for MySQL
         run: |
          sudo apt-get install -y mysql-client
-         until mysqladmin ping -h"127.0.0.1" -uroot -proot --silent; do
+         until mysqladmin ping -hmysql -uroot -proot --silent; do
           sleep 2
          done
         
-      - name: Run Migrations
-        run: php artisan migrate --force
+      - run: php artisan migrate --force
       
       - name: Run Pint (linter)
         run: vendor/bin/pint --test
