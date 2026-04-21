@@ -48,7 +48,7 @@ jobs:
         run: |
          sudo apt-get install -y mysql-client
          export MYSQL_PWD=root
-         until mysqladmin ping -hmysql -uroot -proot --silent; do
+         until mysqladmin ping -hmysql -uroot --silent; do
           sleep 15
          done
         
