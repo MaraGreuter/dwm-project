@@ -44,7 +44,7 @@ jobs:
       - run: php artisan key:generate
 
       - name: Wait for MySQL
-        run:
+        run: |
          sudo apt-get install -y mysql-client
          until mysqladmin ping -h"127.0.0.1" -uroot -proot --silent; do
           sleep 2
