@@ -50,8 +50,8 @@ jobs:
           sleep 2
          done
         
-      
-      - run: php artisan migrate --force
+      - name: Run Migrations
+        run: php artisan migrate --force
       
       - name: Run Pint (linter)
         run: vendor/bin/pint --test
