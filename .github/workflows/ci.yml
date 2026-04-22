@@ -52,7 +52,7 @@ jobs:
         run: composer exec pint -- --test
 
       - name: Run PHPStan
-        run: vendor/bin/phpstan analyse
+        run: composer exec phpstan -- analyse
 
       - name: Run Tests
         run: php artisan test
