@@ -49,7 +49,7 @@ jobs:
       - run: php artisan migrate --force
       
       - name: Run Pint (linter)
-        run: php artisan pint --test
+        run: composer exec pint -- --test
 
       - name: Run PHPStan
         run: vendor/bin/phpstan analyse
