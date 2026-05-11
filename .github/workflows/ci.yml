@@ -30,6 +30,7 @@ jobs:
           extensions: mbstring, bcmath, pdo_mysql
 
       - run: composer install --no-interaction --prefer-dist --no-progress
+      - run: composer dump-autoload
       
       - run: cp .env.example .env
       - name: Setup DB
@@ -43,6 +44,7 @@ jobs:
           
       - run: php artisan key:generate
       - run: php artisan config:clear
+      - run: php artisan cache:clear
 
 
         
@@ -52,7 +54,7 @@ jobs:
         run: composer exec pint -- --test
 
       - name: Run PHPStan
-        run: composer exec phpstan -- analyse
+        run: composer exec phpstan -- analyse --memory-limit=1G
 
       - name: Run Tests
         run: php artisan test
