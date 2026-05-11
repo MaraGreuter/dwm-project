@@ -49,8 +49,7 @@ jobs:
           
       - run: php artisan key:generate
       - run: php artisan config:clear
-      - run: php artisan cache:clear
-
+     
 
         
       - run: php artisan migrate --force
