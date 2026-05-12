@@ -3,5 +3,13 @@ includes:
 
 parameters:
     level: 5
+
     paths:
-        -app
+        - app
+
+    excludePaths:
+        - vendor
+        - storage
+        - bootstrap/cache
+
+    memoryLimit: 1G
