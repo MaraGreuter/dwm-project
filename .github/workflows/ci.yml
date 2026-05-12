@@ -53,9 +53,7 @@ jobs:
           
       - run: php artisan key:generate
       - name: Clear caches
-        run: |
-          php artisan config:clear
-          php artisan cache:clear
+        run: php artisan config:clear -vvv
 
       - name: Wait for MySQL
         run: |
