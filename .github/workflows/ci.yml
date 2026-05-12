@@ -67,7 +67,7 @@ jobs:
         run: vendor/bin/pint --test
 
       - name: Run PHPStan
-        run: vendor/bin/phpstan analyse
+        run: vendor/bin/phpstan analyse app
 
       - name: Run Tests
         run: php artisan test
