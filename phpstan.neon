@@ -14,3 +14,6 @@ parameters:
         - bootstrap/cache
 
     memoryLimit: 1G
+
+        bootstrapFiles:
+            - vendor/autoload.php
