@@ -21,4 +21,3 @@ parameters:
     parallel:
         maximumNumberOfProcesses: 1
 
-    memoryLimit: 1G
