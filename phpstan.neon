@@ -2,8 +2,7 @@ includes:
     - vendor/larastan/larastan/extension.neon
 
 parameters:
-    level: 5
-    tmpDir: .phpstan-cache
+    level: 3
 
     paths:
         - app
@@ -13,7 +12,13 @@ parameters:
         - storage
         - bootstrap/cache
 
-    memoryLimit: 1G
+    fileExtensions:
+        - php
 
-        bootstrapFiles:
-            - vendor/autoload.php
+    bootstrapFiles:
+        - vendor/autoload.php
+
+    parallel:
+        maximumNumberOfProcesses: 1
+
+    memoryLimit: 1G
