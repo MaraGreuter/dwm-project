@@ -9,7 +9,7 @@ class MapsController extends Controller
     public function index(request $request)
     {
         //$location =
-        $lat = $request->input('latitude');
+       //$lat = $request->input('latitude');
 
         return view('home');
     }
