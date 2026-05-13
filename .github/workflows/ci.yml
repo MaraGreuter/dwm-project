@@ -67,7 +67,9 @@ jobs:
         run: vendor/bin/pint --test
 
       - name: Run PHPStan
-        run: vendor/bin/phpstan analyse app
+        run: vendor/bin/phpstan analyse app --memory-limit=1G --configuration=phpstan.neon
+      - name: Create PHPStan cache dir
+        run: mkdir -p .phpstan-cache
 
       - name: Run Tests
         run: php artisan test
