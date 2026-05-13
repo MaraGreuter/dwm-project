@@ -11,7 +11,7 @@ class InvoiceController extends Controller
     {
         $data = ['name' => $request->name,
             'address' => $request->address,
-            'address' => $request->plaats,
+            'plaats' => $request->plaats,
 
         ];
 
