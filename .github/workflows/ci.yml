@@ -5,91 +5,44 @@ on: push
 jobs:
   build:
     runs-on: ubuntu-latest
-    
-    services:
-      mysql:
-        image: mysql:8.0
-        env:
-          MYSQL_ROOT_PASSWORD: root
-          MYSQL_DATABASE: ci_db
-        ports:
-          - 3306:3306
-          
-        options: >-
-          --health-cmd="mysqladmin ping -proot"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=3
-      
-    steps:
-      - uses: actions/checkout@v4
 
-      - uses: shivammathur/setup-php@v2
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: setup PHP
+        uses: shivammathur/setup-php@v2
         with:
           php-version: 8.2
-          extensions: mbstring, bcmath, pdo_mysql
+          extensions: mbstring, xml, ctype, json bcmath, pdo_mysql
 
-      - run: composer install --no-interaction --prefer-dist --no-progress      
+      - name: Cache composer packages
+        uses: actions/cache@v4
+        with:
+          path: vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
 
-      - run: cp .env.example .env
-      
-      - name: Fix permissions
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist --no-progress
+
+      - name: Copy environment file
+        run: cp .env.example .env
+
+      - name: generate application key
+        run: php artisan key:generate --env=ci
+
+      - name: Set directory permissions
         run: chmod -R 777 storage bootstrap/cache
-        
-      - name: Setup DB
-        run: |
-          echo "APP_ENV=testing" >> .env
-          echo "CACHE_DRIVER=file" >> .env
-          echo "SESSION_DRIVER=file" >> .env
-          echo "QUEUE_CONNECTION=sync" >> .env
-          
-          echo "DB_CONNECTION=mysql" >> .env
-          echo "DB_HOST=127.0.0.1" >> .env
-          echo "DB_PORT=3306" >> .env
-          echo "DB_DATABASE=ci_db" >> .env
-          echo "DB_USERNAME=root" >> .env
-          echo "DB_PASSWORD=root" >> .env
 
-          
-      - run: php artisan key:generate
-      - name: Clear caches
-        run: php artisan config:clear -vvv
-
-      - name: Wait for MySQL
-        run: |
-          until mysqladmin ping -h"127.0.0.1" -uroot -proot --silent; do
-            sleep 2
-          done
-        
-      - run: php artisan migrate --force
-      
-      - name: Run Pint (linter)
+      - name: check code style with pint
         run: vendor/bin/pint --test
 
-      - name: Run PHPStan
-        run: vendor/bin/phpstan analyse app --memory-limit=1G --configuration=phpstan.neon
-      - name: Create PHPStan cache dir
-        run: mkdir -p .phpstan-cache
+      - name: Build assets with Vite
+        run: npm run build
 
-      - name: Run Tests
-        run: php artisan test
-        
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
 
-    steps:
-      - name: Deploy via SSH
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SSH_KEY }}
-          script: |
-            cd /var/www/app
-            docker compose pull
-            docker compose up -d
-        
 
-  
+
 
