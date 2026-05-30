@@ -48,14 +48,15 @@ jobs:
       - name: generate application key
         run: php artisan key:generate
 
-
-
       - name: Run migrations
         run: php artisan migrate --force
 
 
       - name: Build assets with Vite
         run: npm run build
+
+      - name: check code style with pint
+        run: vendor/bin/pint --test
 
       - name: Run tests
         run: php artisan test
