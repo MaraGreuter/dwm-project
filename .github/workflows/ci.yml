@@ -25,7 +25,7 @@ jobs:
           restore-keys: ${{ runner.os }}-composer-
 
       - name: Install Composer dependencies
-        run: composer install --no-interaction --prefer-dist --optimize-autoload --no-progress
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader --no-progress
 
       - name: Setup Node
         uses: actions/setup-node@v4
