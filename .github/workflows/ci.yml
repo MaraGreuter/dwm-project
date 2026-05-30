@@ -41,12 +41,12 @@ jobs:
         run: cp .env.example .env
 
       - name: Use SQLite for CI
-        run:
+        run: |
           echo "DB_CONNECTION=sqlite" >> .env
           echo "DB_DATABASE=:memory:" >> .env
 
       - name: generate application key
-        run: php artisan key:generate --env
+        run: php artisan key:generate
 
 
 
