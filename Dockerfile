@@ -9,7 +9,7 @@ RUN a2enmod rewrite
 #install composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-WORKDIR /var/www/html
+WORKDIR /var/www/html/public
 
 COPY . .
 
