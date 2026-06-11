@@ -15,7 +15,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: 8.2
-          extensions: mbstring, xml, ctype, json, bcmath, pdo_mysql
+          extensions: mbstring, xml, ctype, json, bcmath, pdo_mysql, pdo_sqlite
 
       - name: Cache composer packages
         uses: actions/cache@v4
@@ -42,10 +42,13 @@ jobs:
       - name: Use SQLite for CI
         run: |
           echo "DB_CONNECTION=sqlite" >> .env
-          echo "DB_DATABASE=:memory:" >> .env
+          echo "DB_DATABASE=${{ github.workspace }}/database/database.sqlite" >> .env
 
       - name: generate application key
         run: php artisan key:generate
+
+      - name: clear config cache
+        run: php artisan config:clear
 
       - name: Run migrations
         run: php artisan migrate --force

@@ -16,12 +16,12 @@ COPY . .
 
 RUN composer install --no-dev --optimize-autoloader
 
+RUN npm install && npm run build
+
 RUN chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
 
-
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
-
 
 RUN sed -ri -e "s!/var/www/html!${APACHE_DOCUMENT_ROOT}!g" \
     /etc/apache2/sites-available/*.conf
@@ -31,8 +31,5 @@ RUN printf '<Directory /var/www/html/public>\n\
     Require all granted\n\
 </Directory>\n' > /etc/apache2/conf-available/laravel.conf \
     && a2enconf laravel
-
-
-
 
 EXPOSE  80
