@@ -6,19 +6,21 @@ RUN apt-get update && apt-get install -y \
 
 #enable apacbhe rewrite
 RUN a2enmod rewrite
+
 #install composer
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-WORKDIR /var/www/html/public
+WORKDIR /var/www/html
 
 COPY . .
 
 RUN composer install --no-dev --optimize-autoloader
 
 RUN chown -R www-data:www-data storage bootstrap/cache
+RUN chown -R 775 storage boostrap/cache
 
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
-ENV SESSION_DRIVER=file
+
 
 RUN sed -ri -e 's!/var/www/html/var/www/html/public!g' \
     /etc/apache2/sites-available/*.conf \
