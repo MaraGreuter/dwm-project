@@ -26,6 +26,14 @@ RUN npm run build
 RUN chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
 
+COPY .env.example .env
+
+RUN php artisan key:generate
+
+RUN php artisan config:clear
+
+RUN php artisan migrate --force
+
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 
 RUN sed -ri -e "s!/var/www/html!${APACHE_DOCUMENT_ROOT}!g" \
