@@ -29,8 +29,6 @@ RUN php artisan config:clear || true
 RUN php artisan cache:clear || true
 RUN php artisan optimize:clear || true
 
-COPY --from=node /app/public/build public/build
-
 COPY .env.example .env
 
 RUN php artisan key:generate
