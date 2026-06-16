@@ -1,13 +1,3 @@
-FROM node:20 as node
-
-WORKDIR /app
-
-COPY package*.json ./
-RUN npm install
-COPY . .
-RUN npm run build
-
-
 FROM php:8.2-apache
 
 RUN apt-get update && apt-get install -y \
@@ -34,15 +24,16 @@ RUN composer install \
 
 COPY . .
 
-COPY --from=node /app/public/build public/build
+#COPY --from=node /app/public/build public/build
+#
+#COPY .env.example .env
+#
+#RUN php artisan key:generate
+#
+#RUN php artisan config:clear
 
-COPY .env.example .env
-
-RUN php artisan key:generate
-
-RUN php artisan config:clear
-
-
+RUN chown -R www-data:www-data storage bootstrap/cache \
+    && chmod -R 775 storage bootstrap/cache
 
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 
@@ -55,8 +46,8 @@ RUN printf '<Directory /var/www/html/public>\n\
 </Directory>\n' > /etc/apache2/conf-available/laravel.conf \
     && a2enconf laravel
 
-RUN chown -R www-data:www-data storage bootstrap/cache \
-    && chmod -R 775 storage bootstrap/cache
+
+
 
 
 EXPOSE  80
