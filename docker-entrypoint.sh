@@ -15,8 +15,4 @@ if ! grep -q "APP_KEY=base64" .env; then
   php artisan key:generate --force
 fi
 
-echo "APP_KEY=$APP_KEY" >> .env
-
-
-
 exec apache2-foreground
