@@ -18,7 +18,7 @@ RUN composer install \
     --no-dev \
     --optimize-autoloader \
     --no-interaction \
-    --prefer-dist \
+    --prefer-dist
 
 COPY . .
 RUN php artisan config:clear || true \
