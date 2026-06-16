@@ -6,7 +6,7 @@ services:
       - "8080:80"
     environment:
       DB_CONNECTION: mysql
-      DB_HOST: mysql
+      DB_HOST: dwm_mysql
       DB_PORT: 3306
       DB_DATABASE: dwm_project
       DB_USERNAME: root
