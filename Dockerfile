@@ -31,7 +31,7 @@ RUN php artisan optimize:clear || true
 
 COPY .env.example .env
 
-RUN php artisan key:generate
+#RUN php artisan key:generate
 
 RUN mkdir -p storage/logs bootsrap/cache \
     && chown -R www-data:www-data storage bootstrap/cache \
