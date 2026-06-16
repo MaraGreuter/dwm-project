@@ -25,11 +25,10 @@ COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
 RUN npm run build
-RUN php artisan config:clear || true
-RUN php artisan cache:clear || true
+
 RUN php artisan optimize:clear || true
 
-COPY .env.example .env
+#COPY .env.example .env
 
 #RUN php artisan key:generate
 
@@ -39,7 +38,7 @@ RUN mkdir -p storage/logs bootsrap/cache \
 
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 
-RUN sed -ri -e "s!/var/www/html!${APACHE_DOCUMENT_ROOT}!g" \
+RUN sed -ri 's#/var/www/html#/var/www/html/public#g' \
     /etc/apache2/sites-available/*.conf
 
 RUN printf '<Directory /var/www/html/public>\n\
@@ -50,8 +49,6 @@ RUN printf '<Directory /var/www/html/public>\n\
 
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
-
-
 
 EXPOSE  80
 
