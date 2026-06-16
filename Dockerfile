@@ -32,7 +32,7 @@ RUN php artisan optimize:clear || true
 
 #RUN php artisan key:generate
 
-RUN mkdir -p storage/logs bootsrap/cache \
+RUN mkdir -p storage/logs bootsrrap/cache \
     && chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
 
