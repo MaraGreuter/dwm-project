@@ -53,4 +53,4 @@ RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 EXPOSE  80
 
-CMD ["docker-entrypoint.sh"]
+CMD ["apache2-foreground"]

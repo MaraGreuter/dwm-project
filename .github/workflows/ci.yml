@@ -37,10 +37,11 @@ jobs:
       - name: Copy environment file
         run: cp .env.example .env
 
-      - name: Use SQLite for CI
-        run: |
-          echo "DB_CONNECTION=sqlite" >> .env
-          echo "DB_DATABASE=${{ github.workspace }}/database/database.sqlite" >> .env
+      - name: Run tests with SQLite
+        env:
+          DB_CONNECTION: sqlite
+          DB_DATABASE: ":memory:"
+        run: php artisan test
 
       - name: Install Composer dependencies
         run: composer install --no-interaction --prefer-dist --optimize-autoloader --no-progress
