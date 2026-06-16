@@ -10,7 +10,9 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
 RUN a2enmod rewrite
 
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
-
+RUN php artisan config:clear || true \
+ && php artisan cache:clear || true \
+ && php artisan optimize:clear || true
 WORKDIR /var/www/html
 
 COPY composer.json composer.lock ./
