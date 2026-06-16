@@ -38,8 +38,8 @@ RUN mkdir -p storage/logs bootsrap/cache \
 
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
 
-RUN sed -ri 's#/var/www/html#/var/www/html/public#g' \
-    /etc/apache2/sites-available/*.conf
+RUN sed -i 's#/var/www/html#/var/www/html/public#g' \
+    /etc/apache2/sites-available/000-default.conf
 
 RUN printf '<Directory /var/www/html/public>\n\
     AllowOverride All\n\
