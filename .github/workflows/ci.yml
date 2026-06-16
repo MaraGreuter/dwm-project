@@ -49,6 +49,9 @@ jobs:
       - name: generate application key
         run: php artisan key:generate
 
+      - name: create sessions table
+        run: php artisan session:table
+
       - name: Run migrations
         run: php artisan migrate --force
 
