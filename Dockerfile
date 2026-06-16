@@ -14,15 +14,17 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 WORKDIR /var/www/html
 
 COPY composer.json composer.lock ./
-
 RUN composer install \
     --no-dev \
     --optimize-autoloader \
     --no-interaction \
+    --no-scripts \
     --prefer-dist
 
-
+COPY package.json package-lock.json ./
+RUN npm ci
 COPY . .
+RUN npm run build
 
 #COPY --from=node /app/public/build public/build
 #
