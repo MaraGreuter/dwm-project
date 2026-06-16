@@ -17,8 +17,6 @@ fi
 
 echo "APP_KEY=$APP_KEY" >> .env
 
-RUN php artisan config:clear || true
-RUN php artisan cache:clear || true
 
 
 exec apache2-foreground
