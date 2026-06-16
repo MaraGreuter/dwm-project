@@ -18,7 +18,6 @@ RUN composer install \
     --no-dev \
     --optimize-autoloader \
     --no-interaction \
-    --no-scripts \
     --prefer-dist
 
 COPY package.json package-lock.json ./
