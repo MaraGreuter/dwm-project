@@ -15,4 +15,11 @@ if ! grep -q "APP_KEY=base64" .env; then
   php artisan key:generate --force
 fi
 
+echo "Running migrations..."
+php artisan migrate --force
+
+
+echo "Caching config..."
+php artisan config:cache
+
 exec apache2-foreground
