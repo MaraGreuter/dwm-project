@@ -2,10 +2,6 @@
 
 echo "Setting Laravel runtime config..."
 
-if [ -z "$APP_KEY" ]; then
-  echo "APP_KEY missing!"
-  exit 1
-fi
 
 cp .env.example .env
 
