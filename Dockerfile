@@ -25,6 +25,8 @@ COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
 RUN npm run build
+RUN php artisan config:clear || true
+RUN php artisan cache:clear || true
 
 #COPY --from=node /app/public/build public/build
 #
@@ -34,7 +36,8 @@ RUN npm run build
 #
 #RUN php artisan config:clear
 
-RUN chown -R www-data:www-data storage bootstrap/cache \
+RUN mkdir -p storage/logs boostrap/cache \
+    && chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
 
 ENV APACHE_DOCUMENT_ROOT=/var/www/html/public
