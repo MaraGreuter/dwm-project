@@ -46,10 +46,11 @@ RUN printf '<Directory /var/www/html/public>\n\
 </Directory>\n' > /etc/apache2/conf-available/laravel.conf \
     && a2enconf laravel
 
-
+COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
+RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 
 
 EXPOSE  80
 
-CMD ["apache2-foreground"]
+CMD ["docker-entrypoint.sh"]
