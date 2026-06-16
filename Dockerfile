@@ -27,6 +27,7 @@ COPY . .
 RUN npm run build
 RUN php artisan config:clear || true
 RUN php artisan cache:clear || true
+RUN php artisan optimize:clear || true
 
 #COPY --from=node /app/public/build public/build
 #
