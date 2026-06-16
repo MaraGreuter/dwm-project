@@ -24,8 +24,6 @@ jobs:
           key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
           restore-keys: ${{ runner.os }}-composer-
 
-      - name: Install Composer dependencies
-        run: composer install --no-interaction --prefer-dist --optimize-autoloader --no-progress
 
       - name: Setup Node
         uses: actions/setup-node@v4
@@ -44,11 +42,12 @@ jobs:
           echo "DB_CONNECTION=sqlite" >> .env
           echo "DB_DATABASE=${{ github.workspace }}/database/database.sqlite" >> .env
 
+      - name: Install Composer dependencies
+        run: composer install --no-interaction --prefer-dist --optimize-autoloader --no-progress
+
+
       - name: generate application key
         run: php artisan key:generate
-
-      - name: clear config cache
-        run: php artisan config:clear
 
       - name: Run migrations
         run: php artisan migrate --force
