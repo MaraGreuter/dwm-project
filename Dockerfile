@@ -2,7 +2,7 @@ FROM php:8.2-apache
 
 RUN apt-get update && apt-get install -y \
     git unzip zip curl libzip-dev \
-    && docker-php-ext-install pdo pdo_mysql zip
+    && docker-php-ext-install pdo pdo_mysql pdo_sqlite zip
 
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs
@@ -29,11 +29,11 @@ COPY package.json package-lock.json ./
 RUN npm ci
 RUN npm run build
 
-#COPY .env.example .env
+COPY .env.example .env
 
 #RUN php artisan key:generate
 
-RUN mkdir -p storage/logs bootsrrap/cache \
+RUN mkdir -p storage/logs bootstrap/cache \
     && chown -R www-data:www-data storage bootstrap/cache \
     && chmod -R 775 storage bootstrap/cache
 
@@ -48,9 +48,13 @@ RUN printf '<Directory /var/www/html/public>\n\
 </Directory>\n' > /etc/apache2/conf-available/laravel.conf \
     && a2enconf laravel
 
+ENV DB_CONNECTION=sqlite
+ENV DB_DATABASE=/var/www/html/database/database.sqlite
+
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 RUN chmod +x /usr/local/bin/docker-entrypoint.sh
 
 EXPOSE  80
 
-CMD ["docker-entrypoint.sh"]
+ENTRYPOINT ["docker-entrypoint.sh"]
+CMD ["apache2-foreground"]
