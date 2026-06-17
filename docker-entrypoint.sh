@@ -15,6 +15,9 @@ if ! grep -q "APP_KEY=base64" .env; then
   php artisan key:generate --force
 fi
 touch database/database.sqlite
+
+chown -R www-data:www-data database storage bootstrap/cache
+chmod -R 775 database storage bootstrap/cache
 echo "Running migrations..."
 php artisan migrate --force
 
